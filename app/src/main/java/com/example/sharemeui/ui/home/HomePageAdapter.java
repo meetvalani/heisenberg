@@ -1,7 +1,5 @@
 package com.example.sharemeui.ui.home;
 
-import android.util.Log;
-
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
@@ -22,13 +20,13 @@ public class HomePageAdapter extends FragmentStateAdapter {
             case 3:
                 return new PhotoFragment();
             case 4:
-                return new TempMusicFragment();
+                return new MusicFragment();
             case 5:
                 return new VideoFragment();
             case 6:
                 return new FileFragment();
             default:
-                return new FileFragment();
+                return new AppsFragment();
 
          }
     }

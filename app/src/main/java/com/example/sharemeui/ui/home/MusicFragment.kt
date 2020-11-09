@@ -19,7 +19,7 @@ import com.example.sharemeui.R
 import kotlinx.android.synthetic.main.fragment_temp_music.*
 
 
-class TempMusicFragment : Fragment() {
+class MusicFragment : Fragment() {
     val TAG = "MusicFrag"
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
