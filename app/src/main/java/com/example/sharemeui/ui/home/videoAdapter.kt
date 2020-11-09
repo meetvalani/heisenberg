@@ -50,6 +50,7 @@ class videoAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             Log.d("debug:- in here", "ok")
             itemView.title?.text = video.title
             itemView.size?.text = (Math.round((video.size.toDouble() / ( 1024 * 1024 )) * 100.0)/100.0).toString() + " MB"
+            itemView.coverImage.setImageBitmap(video.coverImage)
         }
     }
 }

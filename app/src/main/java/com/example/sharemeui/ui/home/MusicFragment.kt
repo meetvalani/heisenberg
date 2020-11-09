@@ -63,7 +63,7 @@ class MusicFragment : Fragment() {
                         "song found :- $data $size $title $artist $displayImage"
                     )
                     // Save to your list here
-                    newMusic.add(music(title, size , album.toString()))
+                    newMusic.add(music(title, size , data))
                 }
             }
             val close: Any = cur.close()
