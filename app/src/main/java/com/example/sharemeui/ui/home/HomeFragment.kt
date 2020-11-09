@@ -42,8 +42,8 @@ class HomeFragment : Fragment() {
                 6 -> tab.text = "FILES"
             }
         }.attach()
-        // selects 3rd tab "MUSIC" on launch
-        tabBar.getTabAt(4)?.select()
+        // selects 3rd tab "APPS" on launch
+        tabBar.getTabAt(2)?.select()
         Log.d("$TAG-$SUBTAG","in layouut")
         return root
     }

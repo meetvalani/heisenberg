@@ -41,7 +41,6 @@ class MusicFragment : Fragment() {
         var newMusic = mutableListOf<music>()
         var count = 0
         val musicAdapter = musicAdapter()
-//        musicAdapter.setMusic(mutableListOf<music>(music("no Found", "5.0 MB", ByteArray(0))))
         val recyclerView = musicFragment.findViewById<RecyclerView>(R.id.musicRCV)
         recyclerView.layoutManager = LinearLayoutManager(context)
         recyclerView.adapter = musicAdapter
