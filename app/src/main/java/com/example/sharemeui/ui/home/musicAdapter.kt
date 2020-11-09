@@ -19,7 +19,7 @@ class musicAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         notifyDataSetChanged()
     }
 
-    fun updatePost(music: List<music> ) {
+    fun updateMusicList(music: List<music> ) {
         Log.d("debug:- new Data ", music.toString())
         val oldSize = this.musicList.size
         Log.d("debug:- old Size ", oldSize.toString())
