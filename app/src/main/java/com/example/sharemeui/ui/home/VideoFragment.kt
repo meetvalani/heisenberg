@@ -49,13 +49,13 @@ class VideoFragment : Fragment() {
                     val data: String = cur.getString(cur.getColumnIndexOrThrow(MediaStore.Video.Media.DATA))
                     val size: String = cur.getString(cur.getColumnIndexOrThrow(MediaStore.Video.Media.SIZE))
                     val title: String = cur.getString(cur.getColumnIndexOrThrow(MediaStore.Video.Media.DISPLAY_NAME))
-                    val image: Bitmap? = ThumbnailUtils.createVideoThumbnail(data, MediaStore.Video.Thumbnails.MICRO_KIND);
+//                    val image: Bitmap? = ThumbnailUtils.createVideoThumbnail(data, MediaStore.Video.Thumbnails.MICRO_KIND);
 
                     Log.d("$TAG-$SUBTAG",
                         "video found :- $data $size $title"
                     )
                     // Save to your list here
-                    newVideo.add(video(title, size , image))
+                    newVideo.add(video(title, size , data))
                 }
             }
             val close: Any = cur.close()

@@ -1,9 +1,11 @@
 package com.example.sharemeui.ui.home
+import android.graphics.Color
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.sharemeui.R
 import kotlinx.android.synthetic.main.list_video.view.*
 
@@ -50,7 +52,11 @@ class videoAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             Log.d("debug:- in here", "ok")
             itemView.title?.text = video.title
             itemView.size?.text = (Math.round((video.size.toDouble() / ( 1024 * 1024 )) * 100.0)/100.0).toString() + " MB"
-            itemView.coverImage.setImageBitmap(video.coverImage)
+//            itemView.coverImage.setImageBitmap(video.coverImage)
+            Glide.with(this.itemView)
+                .load(video.coverImage)
+                .thumbnail(0.1f)
+                .into(itemView.coverImage);
         }
     }
 }
