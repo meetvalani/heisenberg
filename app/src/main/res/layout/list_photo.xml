@@ -6,6 +6,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical">
 
+<!--        TODO() :- SIDDHARTH-->
+<!--       make UI for 4 image in one raw with linear layout for RCV-->
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"

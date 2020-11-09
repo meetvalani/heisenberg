@@ -51,6 +51,10 @@ class PhotoFragment : Fragment() {
                     )
                     // Save to your list here
                     newPhoto.add(photo(title, data))
+
+//                  TODO() :- SIDDHARTH
+//                  prepare list in group of 4 to pass RCV for parallel and fast loading of preview image
+
                 }
             }
             val close: Any = cur.close()
