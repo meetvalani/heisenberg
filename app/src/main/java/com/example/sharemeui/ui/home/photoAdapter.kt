@@ -50,10 +50,13 @@ class photoAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             Log.d("debug:- in here", "ok")
 //            itemView.title?.text = photo.title
 //            itemView.size?.text = (Math.round((photo.size.toDouble() / ( 1024 * 1024 )) * 100.0)/100.0).toString() + " MB"
-//            Glide.with(this.itemView).asBitmap().load(photo.coverImage).into(itemView.photo)
+            Glide.with(this.itemView).asBitmap().load(photo.coverImage).into(itemView.photo)
+            Glide.with(this.itemView).asBitmap().load(photo.coverImage1).into(itemView.photo1)
+            Glide.with(this.itemView).asBitmap().load(photo.coverImage2).into(itemView.photo2)
+            Glide.with(this.itemView).asBitmap().load(photo.coverImage3).into(itemView.photo3)
 
 //            TODO() :- SIDDHARTH
-//             make every image load with parallel and small (preview mode) for faster loading  by glide
+//             make proper login for loading photos and its size
 
         }
     }

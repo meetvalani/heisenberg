@@ -33,34 +33,46 @@ class PhotoFragment : Fragment() {
         val cur: Cursor? = cr.query(uri, null, null, null, sortOrder)
         var newPhoto = mutableListOf<photo>()
         var count = 0
-//        val photoAdapter = photoAdapter()
-//        val recyclerView = photoFragment.findViewById<RecyclerView>(R.id.photoRCV)
-//        recyclerView.layoutManager = LinearLayoutManager(context)
-//        recyclerView.adapter = photoAdapter
+        val photoAdapter = photoAdapter()
+        val recyclerView = photoFragment.findViewById<RecyclerView>(R.id.photoRCV)
+        recyclerView.layoutManager = LinearLayoutManager(context)
+        recyclerView.adapter = photoAdapter
 
         Log.d("$TAG-$SUBTAG", "Image found :- " + cur?.getCount().toString())
         if (cur != null) {
             count = cur.getCount()
             if (count > 0) {
+                var photo4List = mutableListOf<String>()
                 while (cur.moveToNext()) {
                     val data: String = cur.getString(cur.getColumnIndexOrThrow(MediaStore.Images.Media.DATA))
-                    val title: String = cur.getString(cur.getColumnIndexOrThrow(MediaStore.Images.Media.DISPLAY_NAME))
-
-                    Log.d("$TAG-$SUBTAG",
-                        "Image found :- $data  $title"
-                    )
-                    // Save to your list here
-                    newPhoto.add(photo(title, data))
-
-//                  TODO() :- SIDDHARTH
-//                  prepare list in group of 4 to pass RCV for parallel and fast loading of preview image
-
+                    photo4List.add(data)
+                    Log.d("$TAG-$SUBTAG","Image found :- $data")
+                    if (photo4List.size >= 4) {
+                        // Save to your list here
+                        newPhoto.add(photo(photo4List[0], photo4List[1], photo4List[2], photo4List[3]))
+                        photo4List.removeAt(0)
+                        photo4List.removeAt(0)
+                        photo4List.removeAt(0)
+                        photo4List.removeAt(0)
+                    }
                 }
+                if (photo4List.size > 0) {
+                    if (photo4List.size == 1)
+                        newPhoto.add(photo(photo4List[0], "None", "None", "None"))
+                    if (photo4List.size == 2)
+                        newPhoto.add(photo(photo4List[0],photo4List[1], "None", "None"))
+                    if (photo4List.size == 3)
+                        newPhoto.add(photo(photo4List[0],photo4List[1], photo4List[2], "None"))
+                    if (photo4List.size == 4)
+                        newPhoto.add(photo(photo4List[0],photo4List[1], photo4List[2], photo4List[3]))
+                }
+//                TODO() -> SIDDHARTH
+//                make proper login to add in grid
             }
             val close: Any = cur.close()
         }
         Log.d("$TAG-$SUBTAG", newPhoto.toString())
-//        photoAdapter.setPhoto(newPhoto)
+        photoAdapter.setPhoto(newPhoto)
         return photoFragment
     }
 
