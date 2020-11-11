@@ -52,7 +52,7 @@ class musicAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             Log.d("debug:- in here", "ok")
             itemView.title?.text = music.title
             itemView.size?.text = (Math.round((music.size.toDouble() / ( 1024 * 1024 )) * 100.0)/100.0).toString() + " MB"
-            Glide.with(this.itemView).asBitmap().load("/storage/emulated/0/Download/Tenu Na Bol Pawaan (Behen Hogi Teri).mp3").into(itemView.coverImage)
+//            Glide.with(this.itemView).asBitmap().load("/storage/emulated/0/Download/Tenu Na Bol Pawaan (Behen Hogi Teri).mp3").into(itemView.coverImage)
         }
     }
 }

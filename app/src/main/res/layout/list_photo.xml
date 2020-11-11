@@ -24,21 +24,25 @@
                 android:id="@+id/photo"
                 android:layout_width="100dp"
                 android:layout_height="150dp"
+                android:padding="5dp"
                 tools:src="@tools:sample/avatars" />
             <ImageView
                 android:id="@+id/photo1"
                 android:layout_width="100dp"
                 android:layout_height="150dp"
+                android:padding="5dp"
                 tools:src="@tools:sample/avatars" />
             <ImageView
                 android:id="@+id/photo2"
                 android:layout_width="100dp"
                 android:layout_height="150dp"
+                android:padding="5dp"
                 tools:src="@tools:sample/avatars" />
             <ImageView
                 android:id="@+id/photo3"
                 android:layout_width="100dp"
                 android:layout_height="150dp"
+                android:padding="5dp"
                 tools:src="@tools:sample/avatars" />
         </LinearLayout>
     </LinearLayout>
