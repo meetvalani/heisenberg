@@ -44,12 +44,14 @@ class MusicFragment : Fragment() {
         val recyclerView = musicFragment.findViewById<RecyclerView>(R.id.musicRCV)
         recyclerView.layoutManager = LinearLayoutManager(context)
         recyclerView.adapter = musicAdapter
-
+        val util = context?.let { Util(it) }
+        var histCount = 0
         Log.d("$TAG-$SUBTAG", "song found :- " + cur?.getCount().toString())
         if (cur != null) {
             count = cur.getCount()
             if (count > 0) {
                 while (cur.moveToNext()) {
+                    histCount += 1
                     val data: String = cur.getString(cur.getColumnIndexOrThrow(MediaStore.Audio.Media.DATA))
                     val size: String = cur.getString(cur.getColumnIndexOrThrow(MediaStore.Audio.Media.SIZE))
                     val title: String = cur.getString(cur.getColumnIndexOrThrow(MediaStore.Audio.Media.DISPLAY_NAME))
@@ -59,11 +61,15 @@ class MusicFragment : Fragment() {
                         cur.getLong(cur.getColumnIndexOrThrow(MediaStore.Audio.Media._ID))
                     )
                     val displayImage = BitmapFactory.decodeFile(album.toString())
-                    Log.d("$TAG-$SUBTAG",
-                        "song found :- $data $size $title $artist $displayImage"
-                    )
+                    Log.d("$TAG-$SUBTAG","song found :- $data $size $title $artist $displayImage")
                     // Save to your list here
+
                     newMusic.add(music(title, size , data))
+                    if(histCount <= 10) {
+                        if (util != null) {
+                            util.insertHistory(title, ((Math.round(size.toDouble() / (1024*1024) * 100 )/ 100)).toString(), null, null, "music", null, null, null)
+                        }
+                    }
                 }
             }
             val close: Any = cur.close()
