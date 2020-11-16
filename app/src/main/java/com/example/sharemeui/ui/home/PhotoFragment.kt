@@ -1,4 +1,5 @@
 package com.example.sharemeui.ui.home
+import android.content.Context
 import android.database.Cursor
 import android.net.Uri
 import android.os.Bundle
@@ -8,6 +9,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.sharemeui.R
@@ -56,6 +58,9 @@ class PhotoFragment : Fragment() {
                         photo4List.removeAt(0)
                     }
                 }
+                val wm = requireContext().getSystemService(Context.WINDOW_SERVICE) as WindowManager
+                val display = wm.defaultDisplay
+                photoAdapter.setScreen(display.height, display.width)
                 if (photo4List.size > 0) {
                     if (photo4List.size == 1)
                         newPhoto.add(photo(photo4List[0], "None", "None", "None"))

@@ -12,7 +12,8 @@ import kotlinx.android.synthetic.main.list_photo.view.*
 class photoAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private var photoList = mutableListOf<photo>()
     val TAG = "photoAdapter"
-
+    var height = 0
+    var width = 0
     fun setPhoto(photos: MutableList<photo>) {
         this.photoList = photos
         notifyDataSetChanged()
@@ -54,10 +55,14 @@ class photoAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             Glide.with(this.itemView).asBitmap().load(photo.coverImage1).centerCrop().into(itemView.photo1)
             Glide.with(this.itemView).asBitmap().load(photo.coverImage2).centerCrop().into(itemView.photo2)
             Glide.with(this.itemView).asBitmap().load(photo.coverImage3).centerCrop().into(itemView.photo3)
-
+            Log.d(TAG, "Height and Width are :- ($height, $width)")
 //            TODO() :- SIDDHARTH
 //             make proper login for loading photos and its size
 
         }
+    }
+    fun setScreen(heightTemp: Int, widthTemp: Int) {
+        height = heightTemp
+        width = widthTemp
     }
 }
