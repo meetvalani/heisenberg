@@ -52,8 +52,7 @@ class historyAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             itemView.size?.text = (Math.round((history.size!!.toDouble() / ( 1024 * 1024 )) * 100.0)/100.0).toString() + " MB"
             Log.d(TAG, "sasas" + history.type)
             if (history.type.equals("photo"))
-            {Glide.with(this.itemView).asBitmap().load(history.coverImage).centerCrop().into(itemView.coverImage)
-            Log.d(TAG, "photo detected")}
+                Glide.with(this.itemView).asBitmap().load(history.coverImage).centerCrop().into(itemView.coverImage)
             else if (history.type.equals("video"))
                 Glide.with(this.itemView).load(history.coverImage).thumbnail(0.1f).into(itemView.coverImage);
             else if (history.type.equals("music"))
