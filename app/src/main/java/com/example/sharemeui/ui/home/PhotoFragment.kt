@@ -54,7 +54,7 @@ class PhotoFragment : Fragment() {
                     photo4List.add(data)
                     if(histCount <= 10) {
                         if (util != null) {
-                            util.insertHistory(data.split("/")[data.split("/").size - 1], ((Math.round(size.toDouble() / (1024*1024) * 100 )/ 100)).toString(), data, null, "photo", null, null, null)
+                            util.insertHistory(data.split("/")[data.split("/").size - 1], ((Math.round(size.toDouble() / (1024*1024) * 100 )/ 100)).toString(), data, null, null, "photo", null, null, null)
                         }
                     }
                     Log.d("$TAG-$SUBTAG","Image found :- $data")

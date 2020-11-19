@@ -25,7 +25,10 @@ class HomeFragment : Fragment() {
         homeViewModel =
             ViewModelProviders.of(this).get(HomeViewModel::class.java)
         val root = inflater.inflate(R.layout.fragment_home, container, false)
-
+        val util = this.context?.let { Util(it) }
+        if (util != null) {
+            util.clearAllHistory()
+        }
         val homeViewPager: ViewPager2 = root.findViewById(R.id.homeViewPager)
         homeViewPager.adapter = this.activity?.let { HomePageAdapter(it) }
 
