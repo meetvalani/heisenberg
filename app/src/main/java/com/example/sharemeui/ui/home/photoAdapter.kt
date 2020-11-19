@@ -3,6 +3,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.sharemeui.R
@@ -14,6 +15,7 @@ class photoAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     val TAG = "photoAdapter"
     var height = 0
     var width = 0
+    var imagePerRow = 4
     fun setPhoto(photos: MutableList<photo>) {
         this.photoList = photos
         notifyDataSetChanged()
@@ -51,6 +53,22 @@ class photoAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             Log.d("debug:- in here", "ok")
 //            itemView.title?.text = photo.title
 //            itemView.size?.text = (Math.round((photo.size.toDouble() / ( 1024 * 1024 )) * 100.0)/100.0).toString() + " MB"
+            var columnWidth = (width / imagePerRow).toInt()
+            var columnHeight = (height / imagePerRow).toInt()
+
+            var imageLayouts = itemView.findViewById<ImageView>(R.id.photo).layoutParams
+            imageLayouts.width = columnWidth
+            imageLayouts.height = columnHeight
+            imageLayouts = itemView.findViewById<ImageView>(R.id.photo1).layoutParams
+            imageLayouts.width = columnWidth
+            imageLayouts.height = columnHeight
+            imageLayouts = itemView.findViewById<ImageView>(R.id.photo2).layoutParams
+            imageLayouts.width = columnWidth
+            imageLayouts.height = columnHeight
+            imageLayouts = itemView.findViewById<ImageView>(R.id.photo3).layoutParams
+            imageLayouts.width = columnWidth
+            imageLayouts.height = columnHeight
+
             Glide.with(this.itemView).asBitmap().load(photo.coverImage).centerCrop().into(itemView.photo)
             Glide.with(this.itemView).asBitmap().load(photo.coverImage1).centerCrop().into(itemView.photo1)
             Glide.with(this.itemView).asBitmap().load(photo.coverImage2).centerCrop().into(itemView.photo2)
