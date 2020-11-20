@@ -67,7 +67,7 @@ class MusicFragment : Fragment() {
                     newMusic.add(music(title, size , data))
                     if(histCount <= 10) {
                         if (util != null) {
-                            util.insertHistory(title, ((Math.round(size.toDouble() / (1024*1024) * 100 )/ 100)).toString(), null, null, "music", null, null, null)
+                            util.insertHistory(title, ((Math.round(size.toDouble() / (1024*1024) * 100 )/ 100)).toString(), null, null, null, "music", null, null, null)
                         }
                     }
                 }

@@ -29,6 +29,7 @@
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
         app:srcCompat="@mipmap/wifi" />
+
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/htspFab"
         android:layout_width="wrap_content"

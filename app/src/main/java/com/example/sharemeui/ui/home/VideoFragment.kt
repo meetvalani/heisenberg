@@ -58,7 +58,7 @@ class VideoFragment : Fragment() {
                     newVideo.add(video(title, size , data))
                     if(histCount <= 10) {
                         if (util != null) {
-                            util.insertHistory(title, ((Math.round(size.toDouble() / (1024*1024) * 100 )/ 100)).toString(), data, null, "video", null, null, null)
+                            util.insertHistory(title, ((Math.round((size.toDouble() / (1024*1024) )* 100 ))/ 100).toString(), data, null, null, "video", null, null, null)
                         }
                     }
                 }

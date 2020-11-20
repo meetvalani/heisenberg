@@ -4,13 +4,14 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-
+// possible results are (PENDING, INPROGRESS, COMPLETED, CANCELED, ERROR)
 @Entity
 data class HistoryEntity(
     @PrimaryKey(autoGenerate = true) val uid: Int,
     @ColumnInfo(name = "title") val title: String?,
     @ColumnInfo(name = "size") val size: String?,
     @ColumnInfo(name = "coverImage") val coverImage: String?,
+    @ColumnInfo(name = "filePath") val filePath: String?,
     @ColumnInfo(name = "processCompleted") val processCompleted: String?,
     @ColumnInfo(name = "type") val type: String?,
     @ColumnInfo(name = "dateCreated") val dateCreated: Long?,
