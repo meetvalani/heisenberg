@@ -108,7 +108,7 @@ class AppsFragment : Fragment() {
                 }
             }
 //            TODO() -> Siddharth
-//            last 3 apps might be not added in list, visit music fragment to understand what is added after loop iteration
+//            Add db caching for storing apps data instead loading every time.
         }
         Log.d("$TAG-$SUBTAG", "finished all apps processing")
         Log.d("$TAG-$SUBTAG", "Sending apps details to adapter" + newApp.toString())
