@@ -1,6 +1,8 @@
 package com.example.sharemeui.ui.home
 
+import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
+import android.content.pm.PackageManager.MATCH_SYSTEM_ONLY
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -41,8 +43,38 @@ class AppsFragment : Fragment() {
         //get a list of installed apps.
         Log.d("$TAG-$SUBTAG", "started fetching apps packages")
         val packages = pm?.getInstalledApplications(0)
+        val sysPackages = pm?.getInstalledApplications(MATCH_SYSTEM_ONLY)
         Log.d("$TAG-$SUBTAG", "get all apps packages")
         if (packages != null) {
+            if (sysPackages != null) {
+                for (i in 0..sysPackages.size-1) {
+                    for (j in 0..packages.size-1) {
+                        if (sysPackages[i].packageName == packages[j].packageName){
+                            packages.removeAt(j)
+                            break
+                        }
+                    }
+                }
+                var packagesNames = mutableListOf<String>()
+                for (i in 0..packages.size-1) {
+                    packagesNames.add(
+                        pm.getApplicationInfo(packages[i].packageName, 0).loadLabel(pm).toString().toLowerCase()
+                    )
+                }
+                for (i in 0..packages.size-2) {
+                    for (j in i+1..packages.size-1) {
+                        if (packagesNames[i] > packagesNames[j]) {
+                            val tmp: ApplicationInfo = packages[i]
+                            packages[i] = packages[j]
+                            packages[j] = tmp
+                            val tmpName: String = packagesNames[i]
+                            packagesNames[i] = packagesNames[j]
+                            packagesNames[j] = tmpName
+                        }
+                    }
+                }
+            }
+            Log.d("$TAG-$SUBTAG", "total apps are : ${packages.size}")
             var app4List = mutableListOf<app_single>()
             for (packageInfo in packages) {
                 val packageName =  packageInfo.packageName
@@ -60,7 +92,7 @@ class AppsFragment : Fragment() {
                     app4List.removeAt(0)
                     app4List.removeAt(0)
                     app4List.removeAt(0)
-                   
+
                     if (new) {
                         Log.d("$TAG-$SUBTAG", "set list" + newApp.size.toString())
                         appAdapter.setApp(newApp)
@@ -71,8 +103,8 @@ class AppsFragment : Fragment() {
                         Log.d("$TAG-$SUBTAG",  "update list" + newApp.size.toString())
                     }
                     Log.d("$TAG-$SUBTAG", "Still on ongoing loop")
-                    if (newApp.size > 10 )
-                        return appsFragment
+//                    if (newApp.size > 10 )
+//                        return appsFragment
                 }
             }
 //            TODO() -> Siddharth
