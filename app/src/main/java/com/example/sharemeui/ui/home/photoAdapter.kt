@@ -1,4 +1,6 @@
 package com.example.sharemeui.ui.home
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -56,16 +58,20 @@ class photoAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             var columnWidth = (width / imagePerRow).toInt()
             var columnHeight = (columnWidth * 4 / 3).toInt()
 
-            var imageLayouts = itemView.findViewById<ImageView>(R.id.photo).layoutParams
+            val imageView = itemView.findViewById<ImageView>(R.id.photo)
+            val imageView1 = itemView.findViewById<ImageView>(R.id.photo1)
+            val imageView2 = itemView.findViewById<ImageView>(R.id.photo2)
+            val imageView3 = itemView.findViewById<ImageView>(R.id.photo3)
+            var imageLayouts = imageView.layoutParams
             imageLayouts.width = columnWidth
             imageLayouts.height = columnHeight
-            imageLayouts = itemView.findViewById<ImageView>(R.id.photo1).layoutParams
+            imageLayouts = imageView1.layoutParams
             imageLayouts.width = columnWidth
             imageLayouts.height = columnHeight
-            imageLayouts = itemView.findViewById<ImageView>(R.id.photo2).layoutParams
+            imageLayouts = imageView2.layoutParams
             imageLayouts.width = columnWidth
             imageLayouts.height = columnHeight
-            imageLayouts = itemView.findViewById<ImageView>(R.id.photo3).layoutParams
+            imageLayouts = imageView3.layoutParams
             imageLayouts.width = columnWidth
             imageLayouts.height = columnHeight
 
@@ -73,7 +79,26 @@ class photoAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             Glide.with(this.itemView).asBitmap().load(photo.coverImage1).centerCrop().into(itemView.photo1)
             Glide.with(this.itemView).asBitmap().load(photo.coverImage2).centerCrop().into(itemView.photo2)
             Glide.with(this.itemView).asBitmap().load(photo.coverImage3).centerCrop().into(itemView.photo3)
-            Log.d(TAG, "Height and Width are :- ($height, $width)")
+            imageView.setOnClickListener {
+                var back = imageView.background as ColorDrawable
+                if (back !== null){
+//                    back = null
+                    Log.d(TAG, "tt" + back.toString())
+                } else {
+                    imageView.setBackgroundColor(Color.rgb(47,127,45))
+                    Log.d(TAG, "tt" + "null")
+                }
+            }
+            imageView1.setOnClickListener {
+                Log.d(TAG, "tt" + imageView1.background.toString())
+            }
+            imageView2.setOnClickListener {
+                Log.d(TAG, "tt" + imageView2.background.toString())
+            }
+            imageView3.setOnClickListener {
+                Log.d(TAG, "tt" + imageView3.background.toString())
+            }
+
 //            TODO() :- SIDDHARTH
 //             make proper login for loading photos and its size
 

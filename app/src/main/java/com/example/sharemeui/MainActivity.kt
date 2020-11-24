@@ -7,7 +7,6 @@ import android.util.Log
 import android.view.Menu
 import androidx.appcompat.app.AlertDialog
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.navigation.NavigationView
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
@@ -23,6 +22,7 @@ import androidx.core.content.ContextCompat
 class MainActivity : AppCompatActivity() {
     private lateinit var appBarConfiguration: AppBarConfiguration
     val TAG = "mainActivity"
+    var isFabOpen = false
     override fun onCreate(savedInstanceState: Bundle?) {
         val SUBTAG = "oncreate"
         super.onCreate(savedInstanceState)
@@ -35,11 +35,38 @@ class MainActivity : AppCompatActivity() {
                 arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE),
                 1)
         }
-        val fab: FloatingActionButton = findViewById(R.id.htspFab)
-        fab.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show()
+        val fab: FloatingActionButton = findViewById(R.id.fab)
+        val htspFab: FloatingActionButton = findViewById(R.id.htspFab)
+        val wifiFab: FloatingActionButton = findViewById(R.id.wifiFab)
+        fab.setOnClickListener {
+            if (isFabOpen) {
+                htspFab.translationY = 200F
+                wifiFab.translationY = 400F
+                isFabOpen = !isFabOpen
+            } else {
+                htspFab.translationY = -200F
+                wifiFab.translationY = -400F
+                isFabOpen = !isFabOpen
+            }
+            Log.d("$TAG-$SUBTAG", "fab clicked")
         }
+//        TODO() -> SIDDHARTH/MEET
+//         all permisison check and enable location on hotspot
+//         add loader in enabling and disabling hotspot and wifi
+//         gracefully handle once completed connection on both serer and receiever
+
+        htspFab.setOnClickListener {
+            HtspFragment().apply {
+                show(supportFragmentManager, HtspFragment.TAG)
+            }
+        }
+
+        wifiFab.setOnClickListener {
+            WifiFragment().apply {
+                show(supportFragmentManager, WifiFragment.TAG)
+            }
+        }
+
         val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
         val navView: NavigationView = findViewById(R.id.nav_view)
         val navController = findNavController(R.id.nav_host_fragment)

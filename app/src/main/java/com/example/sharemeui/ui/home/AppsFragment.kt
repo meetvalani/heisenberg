@@ -41,8 +41,9 @@ class AppsFragment : Fragment() {
         //get a list of installed apps.
         Log.d("$TAG-$SUBTAG", "started fetching apps packages")
         val packages = pm?.getInstalledApplications(0)
-        Log.d("$TAG-$SUBTAG", "get all apps packages")
+
         if (packages != null) {
+            Log.d("$TAG-$SUBTAG", "get all apps packages" + packages.size.toString())
             var app4List = mutableListOf<app_single>()
             for (packageInfo in packages) {
                 val packageName =  packageInfo.packageName
