@@ -2,6 +2,7 @@ package com.example.sharemeui.ui.home
 
 import android.content.Context
 import android.util.Log
+import android.view.View
 
 
 class Util(context: Context) {
@@ -33,7 +34,7 @@ class Util(context: Context) {
         return 0
     }
 
-    suspend fun insertTransferFile(title: String?, size: String?, filePath: String?, state: String?): Int {
+    suspend fun insertIntoTransferQueue(title: String?, size: String?, filePath: String?, state: String?, itemView: View?): Int {
         if (transferFileDb != null) {
             val res = transferFileDb.insertAll(TransferQueueEntity(0, title, size, filePath, state))
             return 1
@@ -41,7 +42,13 @@ class Util(context: Context) {
             return 0
         }
     }
-
+    suspend fun removeFromTransferQueue(data: String?, itemView: View?) {
+        if (data !== null) {
+            if (transferFileDb != null) {
+                transferFileDb.removeFileFromQueue(data)
+            }
+        }
+    }
     suspend fun clearFullQueue(): Int {
         if (transferFileDb != null) {
             transferFileDb.clearAll()

@@ -9,7 +9,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.sharemeui.MainActivity
 import com.example.sharemeui.R
+import kotlinx.android.synthetic.main.fragment_photo.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.Main
 import kotlinx.coroutines.Dispatchers.IO
@@ -38,8 +40,6 @@ class HistoryFragment : Fragment() {
             CoroutineScope(IO).launch {
                 updateHistory(util.getAllHistory())
             }
-
-
         }
         return historyFragment
     }

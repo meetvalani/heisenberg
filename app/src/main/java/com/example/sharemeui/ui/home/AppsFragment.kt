@@ -38,7 +38,6 @@ class AppsFragment : Fragment() {
         var new = true
         val pm: PackageManager? = this.context?.packageManager
         //get a list of installed apps.
-        //get a list of installed apps.
         Log.d("$TAG-$SUBTAG", "started fetching apps packages")
         val packages = pm?.getInstalledApplications(0)
 
@@ -63,13 +62,11 @@ class AppsFragment : Fragment() {
                     app4List.removeAt(0)
                    
                     if (new) {
-                        Log.d("$TAG-$SUBTAG", "set list" + newApp.size.toString())
                         appAdapter.setApp(newApp)
                         new = false
                     }
                     else {
                         appAdapter.setApp(newApp)
-                        Log.d("$TAG-$SUBTAG",  "update list" + newApp.size.toString())
                     }
                     Log.d("$TAG-$SUBTAG", "Still on ongoing loop")
                     if (newApp.size > 10 )

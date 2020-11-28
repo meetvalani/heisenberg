@@ -50,7 +50,6 @@ class HomeFragment : Fragment() {
         }.attach()
         // selects 3rd tab "APPS" on launch
         tabBar.getTabAt(2)?.select()
-        Log.d("$TAG-$SUBTAG","in layouut")
         return root
     }
 }

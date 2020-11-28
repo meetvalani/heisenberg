@@ -18,4 +18,7 @@ interface TransferQueueDao {
 
     @Query("DELETE FROM TransferQueueEntity")
     suspend fun clearAll()
+
+    @Query("DELETE FROM TransferQueueEntity where filePath = :path")
+    suspend fun removeFileFromQueue(path: String)
 }

@@ -19,13 +19,9 @@ class appAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     }
 
     fun updateAppList(app: MutableList<app> ) {
-        Log.d("debug:- new Data ", app.toString())
         val oldSize = this.appList.size
-        Log.d("debug:- old Size ", oldSize.toString())
         this.appList = app
-        Log.d("debug:- total data", appList.toString())
         val newSize = this.appList.size
-        Log.d("debug:- new Size ", newSize.toString())
         notifyItemRangeInserted(oldSize, newSize)
     }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -38,7 +34,6 @@ class appAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         return appList.size
     }
     override fun getItemViewType(position: Int): Int {
-        Log.d("debug:-  view Type", appList[position].title)
         return 1
     }
     override fun onBindViewHolder(holder:  RecyclerView.ViewHolder, position: Int) {
@@ -48,8 +43,6 @@ class appAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     }
     inner class appViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
         fun bind(app: app) {
-            Log.d("debug:- in here", "ok")
-
             itemView.title.gravity = Gravity.CENTER
             itemView.size.gravity = Gravity.CENTER
             itemView.title?.text = app.title

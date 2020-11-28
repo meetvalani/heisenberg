@@ -18,12 +18,17 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import com.example.sharemeui.ui.home.Util
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers.IO
+import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
     private lateinit var appBarConfiguration: AppBarConfiguration
     val TAG = "mainActivity"
     var isFabOpen = false
     override fun onCreate(savedInstanceState: Bundle?) {
+        Log.d(TAG, "mainActivity called on create")
         val SUBTAG = "oncreate"
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -76,6 +81,8 @@ class MainActivity : AppCompatActivity() {
                 R.id.nav_home, R.id.nav_gallery, R.id.nav_slideshow), drawerLayout)
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
+        val util = Util(this)
+        CoroutineScope(IO).launch {  util.clearFullQueue() }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -116,7 +123,6 @@ class MainActivity : AppCompatActivity() {
             1 -> {
                 if (grantResults.isEmpty() || grantResults[0] != PackageManager.PERMISSION_GRANTED) {
                     Log.i("$TAG-$SUBTAG", "Permission has been denied by user")
-//                    setupPermissions()
                 } else {
                     Log.i("$TAG-$SUBTAG", "Permission has been granted by user")
                 }
