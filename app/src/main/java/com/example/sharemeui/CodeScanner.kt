@@ -17,7 +17,6 @@ import com.budiyev.android.codescanner.DecodeCallback
 import com.budiyev.android.codescanner.ErrorCallback
 import com.budiyev.android.codescanner.ScanMode
 import kotlinx.android.synthetic.main.activity_code_scanner.*
-import kotlinx.android.synthetic.main.fragment_wifi.*
 
 class CodeScanner : AppCompatActivity() {
     val TAG = "CodeScanner"

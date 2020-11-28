@@ -8,20 +8,20 @@ import androidx.room.Query
 @Dao
 interface HistoryDao {
     @Query("SELECT * FROM historyentity")
-    fun getAll(): List<HistoryEntity>
+    suspend fun getAll(): List<HistoryEntity>
 
     @Query("SELECT * FROM historyentity order by dateCreated desc")
-    fun getAllByDateDesc(): List<HistoryEntity>
+    suspend fun getAllByDateDesc(): List<HistoryEntity>
 
     @Query("SELECT * FROM historyentity WHERE uid IN (:historyIds)")
-    fun loadAllByIds(historyIds: IntArray): List<HistoryEntity>
+    suspend fun loadAllByIds(historyIds: IntArray): List<HistoryEntity>
 
     @Query("Delete from historyentity")
-    fun deleteAll()
+    suspend fun deleteAll()
 
     @Insert
-    fun insertAll(vararg history: HistoryEntity)
+    suspend fun insertAll(vararg history: HistoryEntity)
 
     @Delete
-    fun delete(history: HistoryEntity)
+    suspend fun delete(history: HistoryEntity)
 }

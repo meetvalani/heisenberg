@@ -11,6 +11,9 @@ import androidx.viewpager2.widget.ViewPager2
 import com.example.sharemeui.R
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers.IO
+import kotlinx.coroutines.launch
 
 
 class HomeFragment : Fragment() {
@@ -27,7 +30,7 @@ class HomeFragment : Fragment() {
         val root = inflater.inflate(R.layout.fragment_home, container, false)
         val util = this.context?.let { Util(it) }
         if (util != null) {
-            util.clearAllHistory()
+            CoroutineScope(IO).launch { util.clearAllHistory() }
         }
         val homeViewPager: ViewPager2 = root.findViewById(R.id.homeViewPager)
         homeViewPager.adapter = this.activity?.let { HomePageAdapter(it) }

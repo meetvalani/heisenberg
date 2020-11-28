@@ -13,6 +13,9 @@ import android.view.WindowManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.sharemeui.R
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers.IO
+import kotlinx.coroutines.launch
 
 
 class PhotoFragment : Fragment() {
@@ -54,7 +57,7 @@ class PhotoFragment : Fragment() {
                     photo4List.add(data)
                     if(histCount <= 10) {
                         if (util != null) {
-                            util.insertHistory(data.split("/")[data.split("/").size - 1], ((Math.round(size.toDouble() / (1024*1024) * 100 )/ 100)).toString(), data, null, null, "photo", null, null, null)
+                            CoroutineScope(IO).launch { util.insertHistory(data.split("/")[data.split("/").size - 1], ((Math.round(size.toDouble() / (1024*1024) * 100 )/ 100)).toString(), data, null, null, "photo", null, null, null) }
                         }
                     }
                     Log.d("$TAG-$SUBTAG","Image found :- $data")

@@ -8,14 +8,14 @@ import androidx.room.Query
 @Dao
 interface TransferQueueDao {
     @Query("SELECT * FROM TransferQueueEntity")
-    fun getAll(): List<TransferQueueEntity>
+    suspend fun getAll(): List<TransferQueueEntity>
 
     @Insert
-    fun insertAll(vararg task: TransferQueueEntity)
+    suspend fun insertAll(vararg task: TransferQueueEntity)
 
     @Delete
-    fun clear(task: TransferQueueEntity)
+    suspend fun clear(task: TransferQueueEntity)
 
     @Query("DELETE FROM TransferQueueEntity")
-    fun clearAll()
+    suspend fun clearAll()
 }

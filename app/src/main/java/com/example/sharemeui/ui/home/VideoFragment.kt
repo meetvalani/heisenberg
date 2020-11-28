@@ -14,6 +14,9 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.sharemeui.R
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers.IO
+import kotlinx.coroutines.launch
 
 class VideoFragment : Fragment() {
 
@@ -58,7 +61,7 @@ class VideoFragment : Fragment() {
                     newVideo.add(video(title, size , data))
                     if(histCount <= 10) {
                         if (util != null) {
-                            util.insertHistory(title, ((Math.round((size.toDouble() / (1024*1024) )* 100 ))/ 100).toString(), data, null, null, "video", null, null, null)
+                            CoroutineScope(IO).launch { util.insertHistory(title, ((Math.round((size.toDouble() / (1024*1024) )* 100 ))/ 100).toString(), data, null, null, "video", null, null, null) }
                         }
                     }
                 }

@@ -10,10 +10,15 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.sharemeui.R
-import java.sql.Date
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers.Main
+import kotlinx.coroutines.Dispatchers.IO
+import kotlinx.coroutines.launch
 
 class HistoryFragment : Fragment() {
     val TAG = "HistoryFrag"
+    val historyAdapter = historyAdapter()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
@@ -24,17 +29,27 @@ class HistoryFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         val historyFragment =  inflater.inflate(R.layout.fragment_history, container, false)
-        val historyAdapter = historyAdapter()
         val recyclerView = historyFragment.findViewById<RecyclerView>(R.id.historyRCV)
         recyclerView.layoutManager = LinearLayoutManager(context)
         recyclerView.adapter = historyAdapter
 
         val util = this.context?.let { Util(it) }
         if (util != null) {
-            val history = util.getAllHistory()
-            historyAdapter.sethistory(history as MutableList<HistoryEntity>)
-            Log.d("$TAG", history.toString())
+            CoroutineScope(IO).launch {
+                updateHistory(util.getAllHistory())
+            }
+
+
         }
         return historyFragment
+    }
+    fun updateHistory(history: List<HistoryEntity>?) {
+        if (history !== null && history.isNotEmpty()) {
+            CoroutineScope(Main).launch {
+                Log.d("$TAG", "updating history in main thread")
+                historyAdapter.sethistory(history as MutableList<HistoryEntity>)
+                Log.d("$TAG", history.toString())
+            }
+        }
     }
 }
