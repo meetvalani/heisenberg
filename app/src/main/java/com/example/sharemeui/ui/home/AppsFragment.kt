@@ -1,5 +1,6 @@
 package com.example.sharemeui.ui.home
 
+import android.content.Context
 import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
 import android.content.pm.PackageManager.MATCH_SYSTEM_ONLY
@@ -8,6 +9,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -76,6 +78,9 @@ class AppsFragment : Fragment() {
             }
             Log.d("$TAG-$SUBTAG", "total apps are : ${packages.size}")
             var app4List = mutableListOf<app_single>()
+            val wm = requireContext().getSystemService(Context.WINDOW_SERVICE) as WindowManager
+            val display = wm.defaultDisplay
+            appAdapter.setScreen(display.height, display.width)
             for (packageInfo in packages) {
                 val packageName =  packageInfo.packageName
                 val size = File(packageInfo.publicSourceDir).length()
