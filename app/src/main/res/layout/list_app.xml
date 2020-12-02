@@ -33,13 +33,13 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textAlignment="center"
-                    android:text="TextView"/>
+                    android:text=""/>
                 <TextView
                     android:id="@+id/size"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textAlignment="center"
-                    android:text="TextView" />
+                    android:text="" />
 
             </LinearLayout>
         </LinearLayout>
@@ -65,13 +65,13 @@
                      android:layout_width="match_parent"
                      android:layout_height="wrap_content"
                      android:textAlignment="center"
-                     android:text="TextView" />
+                     android:text="" />
                  <TextView
                      android:id="@+id/size1"
                      android:layout_width="match_parent"
                      android:layout_height="wrap_content"
                      android:textAlignment="center"
-                     android:text="TextView" />
+                     android:text="" />
 
              </LinearLayout>
          </LinearLayout>
@@ -97,13 +97,13 @@
                      android:layout_width="match_parent"
                      android:layout_height="wrap_content"
                      android:textAlignment="center"
-                     android:text="TextView" />
+                     android:text="" />
                  <TextView
                      android:id="@+id/size2"
                      android:layout_width="match_parent"
                      android:layout_height="wrap_content"
                      android:textAlignment="center"
-                     android:text="TextView" />
+                     android:text="" />
 
              </LinearLayout>
          </LinearLayout>
@@ -129,13 +129,13 @@
                      android:layout_width="match_parent"
                      android:layout_height="wrap_content"
                      android:textAlignment="center"
-                     android:text="TextView" />
+                     android:text="" />
                  <TextView
                      android:id="@+id/size3"
                      android:layout_width="match_parent"
                      android:layout_height="wrap_content"
                      android:textAlignment="center"
-                     android:text="TextView" />
+                     android:text="" />
 
              </LinearLayout>
          </LinearLayout>

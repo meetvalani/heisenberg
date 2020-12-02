@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.sharemeui.R
 import kotlinx.android.synthetic.main.list_photo.view.*
+import kotlin.math.ceil
 
 
 class photoAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -40,23 +41,26 @@ class photoAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         )
     }
     override fun getItemCount(): Int {
-        return photoList.size
+        var listSize: Int = ceil((photoList.size.toDouble() / imagePerRow)).toInt()
+        return listSize
     }
     override fun getItemViewType(position: Int): Int {
         return 1
     }
     override fun onBindViewHolder(holder:  RecyclerView.ViewHolder, position: Int) {
         if (holder is photoViewHolder){
-            holder.bind(photoList[position])
+            holder.bind(photoList, position)
         }
     }
     inner class photoViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
-        fun bind(photo: photo) {
+        fun bind(photoList: MutableList<photo>, position: Int) {
             Log.d("debug:- in here", "ok")
 //            itemView.title?.text = photo.title
 //            itemView.size?.text = (Math.round((photo.size.toDouble() / ( 1024 * 1024 )) * 100.0)/100.0).toString() + " MB"
             var columnWidth = (width / imagePerRow)
             var columnHeight = (columnWidth * 4 / 3)
+            var basePosition = position * imagePerRow
+            var actualPosition = basePosition
 
             var imageLayoutsList = itemView.findViewById<LinearLayout>(R.id.main_box).children
             for (imageLayouts in imageLayoutsList) {
@@ -64,10 +68,36 @@ class photoAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                 imageLayouts.layoutParams.height = columnHeight
             }
 
-            Glide.with(this.itemView).asBitmap().load(photo.coverImage).centerCrop().into(itemView.photo)
-            Glide.with(this.itemView).asBitmap().load(photo.coverImage1).centerCrop().into(itemView.photo1)
-            Glide.with(this.itemView).asBitmap().load(photo.coverImage2).centerCrop().into(itemView.photo2)
-            Glide.with(this.itemView).asBitmap().load(photo.coverImage3).centerCrop().into(itemView.photo3)
+            // for first photo of list, no need to check (actualPosition < appList.size)
+            Glide.with(this.itemView).asBitmap().load(photoList[actualPosition].coverImage).centerCrop().into(itemView.photo)
+            actualPosition += 1
+
+            if (actualPosition < photoList.size) {
+                Glide.with(this.itemView).asBitmap().load(photoList[actualPosition].coverImage)
+                    .centerCrop().into(itemView.photo1)
+            } else {
+                Glide.with(this.itemView).asBitmap().load("None")
+                    .centerCrop().into(itemView.photo1)
+            }
+            actualPosition += 1
+
+            if (actualPosition < photoList.size) {
+                Glide.with(this.itemView).asBitmap().load(photoList[actualPosition].coverImage)
+                    .centerCrop().into(itemView.photo2)
+            } else {
+                Glide.with(this.itemView).asBitmap().load("None")
+                    .centerCrop().into(itemView.photo2)
+            }
+            actualPosition += 1
+
+            if (actualPosition < photoList.size) {
+                Glide.with(this.itemView).asBitmap().load(photoList[actualPosition].coverImage)
+                    .centerCrop().into(itemView.photo3)
+            } else {
+                Glide.with(this.itemView).asBitmap().load("None")
+                    .centerCrop().into(itemView.photo3)
+            }
+
             Log.d(TAG, "Height and Width are :- ($height, $width)")
 //            TODO() :- SIDDHARTH
 //             make proper login for loading photos and its size
