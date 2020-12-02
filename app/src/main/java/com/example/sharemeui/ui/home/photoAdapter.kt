@@ -4,6 +4,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.LinearLayout
+import androidx.core.view.children
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.sharemeui.R
@@ -53,21 +55,14 @@ class photoAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             Log.d("debug:- in here", "ok")
 //            itemView.title?.text = photo.title
 //            itemView.size?.text = (Math.round((photo.size.toDouble() / ( 1024 * 1024 )) * 100.0)/100.0).toString() + " MB"
-            var columnWidth = (width / imagePerRow).toInt()
-            var columnHeight = (columnWidth * 4 / 3).toInt()
+            var columnWidth = (width / imagePerRow)
+            var columnHeight = (columnWidth * 4 / 3)
 
-            var imageLayouts = itemView.findViewById<ImageView>(R.id.photo).layoutParams
-            imageLayouts.width = columnWidth
-            imageLayouts.height = columnHeight
-            imageLayouts = itemView.findViewById<ImageView>(R.id.photo1).layoutParams
-            imageLayouts.width = columnWidth
-            imageLayouts.height = columnHeight
-            imageLayouts = itemView.findViewById<ImageView>(R.id.photo2).layoutParams
-            imageLayouts.width = columnWidth
-            imageLayouts.height = columnHeight
-            imageLayouts = itemView.findViewById<ImageView>(R.id.photo3).layoutParams
-            imageLayouts.width = columnWidth
-            imageLayouts.height = columnHeight
+            var imageLayoutsList = itemView.findViewById<LinearLayout>(R.id.main_box).children
+            for (imageLayouts in imageLayoutsList) {
+                imageLayouts.layoutParams.width = columnWidth
+                imageLayouts.layoutParams.height = columnHeight
+            }
 
             Glide.with(this.itemView).asBitmap().load(photo.coverImage).centerCrop().into(itemView.photo)
             Glide.with(this.itemView).asBitmap().load(photo.coverImage1).centerCrop().into(itemView.photo1)

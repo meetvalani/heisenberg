@@ -4,6 +4,10 @@ import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.LinearLayout
+import androidx.core.view.children
+import androidx.core.view.setPadding
 import androidx.recyclerview.widget.RecyclerView
 import com.example.sharemeui.R
 import kotlinx.android.synthetic.main.list_app.view.*
@@ -12,6 +16,10 @@ import kotlinx.android.synthetic.main.list_app.view.*
 class appAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private var appList = mutableListOf<app>()
     val TAG = "appAdapter"
+    var height = 0
+    var width = 0
+    var appPerRow = 4
+
 
     fun setApp(apps: MutableList<app>) {
         this.appList = apps
@@ -49,6 +57,13 @@ class appAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     inner class appViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
         fun bind(app: app) {
             Log.d("debug:- in here", "ok")
+            var columnWidth = (width / appPerRow)
+
+            var appsLayoutsList = itemView.findViewById<LinearLayout>(R.id.main_box).children
+            for (appsLayout in appsLayoutsList) {
+                appsLayout.layoutParams.width = columnWidth
+                appsLayout.setPadding(5)
+            }
 
             itemView.title.gravity = Gravity.CENTER
             itemView.size.gravity = Gravity.CENTER
@@ -76,5 +91,10 @@ class appAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
 //            Glide.with(this.itemView).asBitmap().load("/storage/emulated/0/Download/Tenu Na Bol Pawaan (Behen Hogi Teri).mp3").into(itemView.coverImage)
         }
+    }
+
+    fun setScreen(heightTemp: Int, widthTemp: Int) {
+        height = heightTemp
+        width = widthTemp
     }
 }
