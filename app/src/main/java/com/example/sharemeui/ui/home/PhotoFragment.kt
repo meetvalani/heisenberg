@@ -46,40 +46,22 @@ class PhotoFragment : Fragment() {
         if (cur != null) {
             count = cur.getCount()
             if (count > 0) {
-                var photo4List = mutableListOf<String>()
                 while (cur.moveToNext()) {
                     histCount += 1
                     val data: String = cur.getString(cur.getColumnIndexOrThrow(MediaStore.Images.Media.DATA))
                     val size: String = cur.getString(cur.getColumnIndexOrThrow(MediaStore.Images.Media.SIZE))
-                    photo4List.add(data)
+                    newPhoto.add(photo(data))
                     if(histCount <= 10) {
                         if (util != null) {
                             util.insertHistory(data.split("/")[data.split("/").size - 1], ((Math.round(size.toDouble() / (1024*1024) * 100 )/ 100)).toString(), data, null, null, "photo", null, null, null)
                         }
                     }
                     Log.d("$TAG-$SUBTAG","Image found :- $data")
-                    if (photo4List.size >= 4) {
-                        // Save to your list here
-                        newPhoto.add(photo(photo4List[0], photo4List[1], photo4List[2], photo4List[3]))
-                        photo4List.removeAt(0)
-                        photo4List.removeAt(0)
-                        photo4List.removeAt(0)
-                        photo4List.removeAt(0)
-                    }
                 }
                 val wm = requireContext().getSystemService(Context.WINDOW_SERVICE) as WindowManager
                 val display = wm.defaultDisplay
                 photoAdapter.setScreen(display.height, display.width)
-                if (photo4List.size > 0) {
-                    if (photo4List.size == 1)
-                        newPhoto.add(photo(photo4List[0], "None", "None", "None"))
-                    if (photo4List.size == 2)
-                        newPhoto.add(photo(photo4List[0],photo4List[1], "None", "None"))
-                    if (photo4List.size == 3)
-                        newPhoto.add(photo(photo4List[0],photo4List[1], photo4List[2], "None"))
-                    if (photo4List.size == 4)
-                        newPhoto.add(photo(photo4List[0],photo4List[1], photo4List[2], photo4List[3]))
-                }
+
 //                TODO() -> SIDDHARTH
 //                make proper login to add in grid
             }

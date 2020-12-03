@@ -77,7 +77,6 @@ class AppsFragment : Fragment() {
                 }
             }
             Log.d("$TAG-$SUBTAG", "total apps are : ${packages.size}")
-            var app4List = mutableListOf<app_single>()
             val wm = requireContext().getSystemService(Context.WINDOW_SERVICE) as WindowManager
             val display = wm.defaultDisplay
             appAdapter.setScreen(display.height, display.width)
@@ -86,31 +85,7 @@ class AppsFragment : Fragment() {
                 val size = File(packageInfo.publicSourceDir).length()
                 val title = pm.getApplicationInfo(packageName, 0).loadLabel(pm)
                 val icon = packageInfo.loadIcon(pm)
-//                val icon = "null"
-                app4List.add(app_single(title.toString(), icon, size.toString()))
-                if (app4List.size >= 4){
-                    newApp.add(app(app4List[0].title, app4List[0].coverImage, app4List[0].size,
-                        app4List[1].title, app4List[1].coverImage, app4List[1].size,
-                        app4List[2].title, app4List[2].coverImage, app4List[2].size,
-                        app4List[3].title, app4List[3].coverImage, app4List[3].size))
-                    app4List.removeAt(0)
-                    app4List.removeAt(0)
-                    app4List.removeAt(0)
-                    app4List.removeAt(0)
-
-                    if (new) {
-                        Log.d("$TAG-$SUBTAG", "set list" + newApp.size.toString())
-                        appAdapter.setApp(newApp)
-                        new = false
-                    }
-                    else {
-                        appAdapter.setApp(newApp)
-                        Log.d("$TAG-$SUBTAG",  "update list" + newApp.size.toString())
-                    }
-                    Log.d("$TAG-$SUBTAG", "Still on ongoing loop")
-//                    if (newApp.size > 10 )
-//                        return appsFragment
-                }
+                newApp.add(app(title.toString(), icon, size.toString()))
             }
 //            TODO() -> Siddharth
 //            Add db caching for storing apps data instead loading every time.

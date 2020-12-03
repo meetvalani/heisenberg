@@ -1,4 +1,6 @@
 package com.example.sharemeui.ui.home
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
@@ -11,6 +13,7 @@ import androidx.core.view.setPadding
 import androidx.recyclerview.widget.RecyclerView
 import com.example.sharemeui.R
 import kotlinx.android.synthetic.main.list_app.view.*
+import kotlin.math.ceil
 
 
 class appAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -43,7 +46,8 @@ class appAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         )
     }
     override fun getItemCount(): Int {
-        return appList.size
+        var listSize: Int = ceil((appList.size.toDouble() / appPerRow)).toInt()
+        return listSize
     }
     override fun getItemViewType(position: Int): Int {
         Log.d("debug:-  view Type", appList[position].title)
@@ -51,45 +55,64 @@ class appAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     }
     override fun onBindViewHolder(holder:  RecyclerView.ViewHolder, position: Int) {
         if (holder is appViewHolder){
-            holder.bind(appList[position])
+            holder.bind(appList, position)
         }
     }
     inner class appViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
-        fun bind(app: app) {
+        fun bind(appList: MutableList<app>, position: Int) {
             Log.d("debug:- in here", "ok")
             var columnWidth = (width / appPerRow)
+            var basePosition = position * appPerRow
+            var actualPosition = basePosition
 
             var appsLayoutsList = itemView.findViewById<LinearLayout>(R.id.main_box).children
             for (appsLayout in appsLayoutsList) {
                 appsLayout.layoutParams.width = columnWidth
                 appsLayout.setPadding(5)
             }
+            
+            // for first app of list, no need to check (actualPosition < appList.size)
+            itemView.title?.text = appList[actualPosition].title
+            itemView.size?.text =
+                (Math.round((appList[actualPosition].size.toDouble() / (1024 * 1024)) * 100.0) / 100.0).toString() + " MB"
+            itemView.photo.setImageDrawable(appList[actualPosition].coverImage)
+            actualPosition += 1
 
-            itemView.title.gravity = Gravity.CENTER
-            itemView.size.gravity = Gravity.CENTER
-            itemView.title?.text = app.title
-            itemView.size?.text = (Math.round((app.size.toDouble() / ( 1024 * 1024 )) * 100.0)/100.0).toString() + " MB"
-            itemView.photo.setImageDrawable(app.coverImage)
+            if (actualPosition < appList.size) {
+                itemView.title1?.text = appList[actualPosition].title
+                itemView.size1?.text =
+                    (Math.round((appList[actualPosition].size.toDouble() / (1024 * 1024)) * 100.0) / 100.0).toString() + " MB"
+                itemView.photo1.setImageDrawable(appList[actualPosition].coverImage)
+            } else {
+                itemView.title1?.text = ""
+                itemView.size1?.text = ""
+                itemView.photo1.setImageDrawable(ColorDrawable(Color.TRANSPARENT))
+            }
+            actualPosition += 1
 
-            itemView.title1.gravity = Gravity.CENTER
-            itemView.size1.gravity = Gravity.CENTER
-            itemView.title1?.text = app.title1
-            itemView.size1?.text = (Math.round((app.size1.toDouble() / ( 1024 * 1024 )) * 100.0)/100.0).toString() + " MB"
-            itemView.photo1.setImageDrawable(app.coverImage1)
+            if (actualPosition < appList.size) {
+                itemView.title2?.text = appList[actualPosition].title
+                itemView.size2?.text =
+                    (Math.round((appList[actualPosition].size.toDouble() / (1024 * 1024)) * 100.0) / 100.0).toString() + " MB"
+                itemView.photo2.setImageDrawable(appList[actualPosition].coverImage)
+            } else {
+                itemView.title2?.text = ""
+                itemView.size2?.text = ""
+                itemView.photo2.setImageDrawable(ColorDrawable(Color.TRANSPARENT))
+            }
+            actualPosition += 1
 
-            itemView.title1.gravity = Gravity.CENTER
-            itemView.size1.gravity = Gravity.CENTER
-            itemView.title2?.text = app.title2
-            itemView.size2?.text = (Math.round((app.size2.toDouble() / ( 1024 * 1024 )) * 100.0)/100.0).toString() + " MB"
-            itemView.photo2.setImageDrawable(app.coverImage2)
+            if (actualPosition < appList.size) {
+                itemView.title3?.text = appList[actualPosition].title
+                itemView.size3?.text =
+                    (Math.round((appList[actualPosition].size.toDouble() / (1024 * 1024)) * 100.0) / 100.0).toString() + " MB"
+                itemView.photo3.setImageDrawable(appList[actualPosition].coverImage)
+            } else {
+                itemView.title3?.text = ""
+                itemView.size3?.text = ""
+                itemView.photo3.setImageDrawable(ColorDrawable(Color.TRANSPARENT))
+            }
 
-            itemView.title1.gravity = Gravity.CENTER
-            itemView.size1.gravity = Gravity.CENTER
-            itemView.title3?.text = app.title3
-            itemView.size3?.text = (Math.round((app.size3.toDouble() / ( 1024 * 1024 )) * 100.0)/100.0).toString() + " MB"
-            itemView.photo3.setImageDrawable(app.coverImage3)
-
-//            Glide.with(this.itemView).asBitmap().load("/storage/emulated/0/Download/Tenu Na Bol Pawaan (Behen Hogi Teri).mp3").into(itemView.coverImage)
         }
     }
 
