@@ -43,14 +43,11 @@ class VideoFragment : Fragment() {
         val recyclerView = videoFragment.findViewById<RecyclerView>(R.id.videoRCV)
         recyclerView.layoutManager = LinearLayoutManager(context)
         recyclerView.adapter = videoAdapter
-        val util = context?.let { Util(it) }
-        var histCount = 0
         Log.d("$TAG-$SUBTAG", "videos found :- " + cur?.getCount().toString())
         if (cur != null) {
             count = cur.getCount()
             if (count > 0) {
                 while (cur.moveToNext()) {
-                    histCount += 1
                     val data: String = cur.getString(cur.getColumnIndexOrThrow(MediaStore.Video.Media.DATA))
                     val size: String = cur.getString(cur.getColumnIndexOrThrow(MediaStore.Video.Media.SIZE))
                     val title: String = cur.getString(cur.getColumnIndexOrThrow(MediaStore.Video.Media.DISPLAY_NAME))
@@ -59,11 +56,6 @@ class VideoFragment : Fragment() {
                     Log.d("$TAG-$SUBTAG","video found :- $data $size $title")
                     // Save to your list here
                     newVideo.add(video(title, size , data))
-                    if(histCount <= 10) {
-                        if (util != null) {
-                            CoroutineScope(IO).launch { util.insertHistory(title, ((Math.round((size.toDouble() / (1024*1024) )* 100 ))/ 100).toString(), data, null, null, "video", null, null, null) }
-                        }
-                    }
                 }
             }
             val close: Any = cur.close()

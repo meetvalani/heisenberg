@@ -49,8 +49,6 @@ class photoAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     }
     inner class photoViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
         fun bind(photo: photo) {
-//            itemView.title?.text = photo.title
-//            itemView.size?.text = (Math.round((photo.size.toDouble() / ( 1024 * 1024 )) * 100.0)/100.0).toString() + " MB"
             var columnWidth = (width / imagePerRow).toInt()
             var columnHeight = (columnWidth * 4 / 3).toInt()
 

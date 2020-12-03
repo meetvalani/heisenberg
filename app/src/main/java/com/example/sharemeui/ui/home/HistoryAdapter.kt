@@ -42,7 +42,7 @@ class historyAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     inner class historyViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
         fun bind(history: HistoryEntity) {
             itemView.title?.text = history.title
-            itemView.size?.text = (Math.round((history.size!!.toDouble() / ( 1024 * 1024 )) * 100.0)/100.0).toString() + " MB"
+            itemView.size?.text = history.size + " MB"
             if (history.type.equals("photo"))
                 Glide.with(this.itemView).asBitmap().load(history.coverImage).centerCrop().into(itemView.coverImage)
             else if (history.type.equals("video"))

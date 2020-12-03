@@ -1,22 +1,23 @@
 package com.example.sharemeui
 
 import android.Manifest
+import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.wifi.WifiConfiguration
 import android.net.wifi.WifiManager
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.format.Formatter
 import android.util.Log
 import android.view.View
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
-import com.budiyev.android.codescanner.AutoFocusMode
+import com.budiyev.android.codescanner.*
 import com.budiyev.android.codescanner.CodeScanner
-import com.budiyev.android.codescanner.DecodeCallback
-import com.budiyev.android.codescanner.ErrorCallback
-import com.budiyev.android.codescanner.ScanMode
 import kotlinx.android.synthetic.main.activity_code_scanner.*
+
 
 class CodeScanner : AppCompatActivity() {
     val TAG = "CodeScanner"
@@ -82,12 +83,20 @@ class CodeScanner : AppCompatActivity() {
                             wifiManager.enableNetwork(i.networkId, true)
                             Log.d(TAG,"connecting to "+ i.toString())
                             val connResult =  wifiManager.reconnect().toString()
+                            val data = Intent()
+                            data.putExtra("myData2", "Data 2 value")
                             if (connResult == "true") {
+                                Log.d(TAG, "server ip :- ${Formatter.formatIpAddress(wifiManager.dhcpInfo.serverAddress)}")
+//                                intToInetAddress(wifiManager.getDhcpInfo().serverAddress);
                                 Log.d(TAG,"connected succesfully")
-                            }
-                            else {
+                                data.putExtra("status", "connected")
+                                data.putExtra("ip", Formatter.formatIpAddress(wifiManager.dhcpInfo.serverAddress))
+                            } else {
                                 Log.d(TAG,"error in connection")
+                                data.putExtra("status", "disConnected")
                             }
+                            setResult(Activity.RESULT_OK, data)
+                            finish()
                             break
                         } catch (e: Exception) {
                             e.printStackTrace()

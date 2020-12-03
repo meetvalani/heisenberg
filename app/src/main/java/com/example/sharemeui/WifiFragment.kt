@@ -13,6 +13,9 @@ import android.view.ViewGroup
 import android.widget.Toast
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import kotlinx.android.synthetic.main.fragment_wifi.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers.IO
+import kotlinx.coroutines.launch
 
 
 class WifiFragment : BottomSheetDialogFragment() {
@@ -64,5 +67,4 @@ class WifiFragment : BottomSheetDialogFragment() {
             }
         }
     }
-
 }

@@ -13,9 +13,6 @@ import android.view.WindowManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.sharemeui.R
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers.IO
-import kotlinx.coroutines.launch
 
 
 class PhotoFragment : Fragment() {
@@ -28,7 +25,6 @@ class PhotoFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         // Inflate the layout for this fragment
         val photoFragment = inflater.inflate(R.layout.fragment_photo, container, false)
         val SUBTAG = "OnCreate"
@@ -43,24 +39,14 @@ class PhotoFragment : Fragment() {
         recyclerView.layoutManager = LinearLayoutManager(context)
         recyclerView.adapter = photoAdapter
 
-        val util = context?.let { Util(it) }
-        var histCount = 0
         Log.d("$TAG-$SUBTAG", "Image found :- " + cur?.getCount().toString())
         if (cur != null) {
             count = cur.getCount()
             if (count > 0) {
                 var photo4List = mutableListOf<String>()
                 while (cur.moveToNext()) {
-                    histCount += 1
                     val data: String = cur.getString(cur.getColumnIndexOrThrow(MediaStore.Images.Media.DATA))
-                    val size: String = cur.getString(cur.getColumnIndexOrThrow(MediaStore.Images.Media.SIZE))
                     photo4List.add(data)
-                    if(histCount <= 10) {
-                        if (util != null) {
-                            CoroutineScope(IO).launch { util.insertHistory(data.split("/")[data.split("/").size - 1], ((Math.round(size.toDouble() / (1024*1024) * 100 )/ 100)).toString(), data, null, null, "photo", null, null, null) }
-                        }
-                    }
-                    Log.d("$TAG-$SUBTAG","Image found :- $data")
                     if (photo4List.size >= 4) {
                         // Save to your list here
                         newPhoto.add(photo(photo4List[0], photo4List[1], photo4List[2], photo4List[3]))

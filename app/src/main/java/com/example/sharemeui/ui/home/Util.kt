@@ -3,10 +3,15 @@ package com.example.sharemeui.ui.home
 import android.content.Context
 import android.util.Log
 import android.view.View
+import com.example.sharemeui.Client
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers.IO
+import kotlinx.coroutines.launch
 
 
 class Util(context: Context) {
     val TAG = "Util"
+    val thisContext = context
     val historyDb = context?.let { AppDatabase.getHistoryInstance(it) }
     val transferFileDb = context?.let { AppDatabase.getTransferQueueInstance(it) }
 
@@ -55,5 +60,26 @@ class Util(context: Context) {
             return 1
         }
         return 0
+    }
+    suspend fun getTransferQueue(): List<TransferQueueEntity>? {
+        if (transferFileDb !== null) {
+            return transferFileDb.getAll()
+        }
+        return null
+    }
+    suspend fun startSendingFromQueue (servers: List<String>) {
+
+        Log.d(TAG, "Starting Transfer Session")
+        val files = this.getTransferQueue()
+        if (files !== null && files.isNotEmpty()) {
+            for (file in files) {
+                if (file !== null) {
+                    insertHistory(file.title, file.size, null, file.filePath, "0%", null, null, null, null)
+                    if (servers != null && servers.isNotEmpty() && file.filePath !== null)
+                        servers.forEach { CoroutineScope(IO).launch { Client(it, null).sendFile(file.filePath, thisContext) }
+                    }
+                }
+            }
+        }
     }
 }
