@@ -8,6 +8,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.sharemeui.R
 import kotlinx.android.synthetic.main.list_video.view.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 
 class videoAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -49,14 +52,21 @@ class videoAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     }
     inner class videoViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
         fun bind(video: video) {
-            Log.d("debug:- in here", "ok")
+            val util = Util(itemView.context)
             itemView.title?.text = video.title
             itemView.size?.text = (Math.round((video.size.toDouble() / ( 1024 * 1024 )) * 100.0)/100.0).toString() + " MB"
-//            itemView.coverImage.setImageBitmap(video.coverImage)
-            Glide.with(this.itemView)
-                .load(video.coverImage)
-                .thumbnail(0.1f)
-                .into(itemView.coverImage);
+            Glide.with(this.itemView).load(video.data).thumbnail(0.1f).into(itemView.coverImage);
+            itemView.setOnClickListener {
+                if (itemView.background !== null) {
+                    itemView.background = null
+                    CoroutineScope(Dispatchers.IO).launch { util.removeFromTransferQueue(video.data) }
+                } else {
+                    itemView.setBackgroundColor(Color.rgb(47, 127, 45))
+                    CoroutineScope(Dispatchers.IO).launch {
+                        util.insertIntoTransferQueue(video.title, "ASK SID MB", video.data, "INQUEUE", "VIDEO")
+                    }
+                }
+            }
         }
     }
 }

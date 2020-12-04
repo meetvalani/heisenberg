@@ -3,7 +3,6 @@ import android.Manifest
 import android.app.Activity
 import android.content.Context
 import android.content.pm.PackageManager
-import android.os.Environment
 import android.util.Log
 import androidx.core.app.ActivityCompat.requestPermissions
 import androidx.core.content.ContextCompat
@@ -17,6 +16,7 @@ class Client (ip: String, port: Int?) {
     val TAG = "Client"
     val ip = ip
     var port : Int = port ?: 7567
+
     suspend fun run(): Int? {
         try {
             val server: Socket = Socket(ip, port)
@@ -45,7 +45,7 @@ class Client (ip: String, port: Int?) {
         return 0
     }
 
-    suspend fun sendFile(filePath: String, context: Context): Int? {
+    suspend fun sendFile(filePath: String, title: String, size: String, type:String, context: Context): Int? {
         try {
             val server: Socket = Socket(ip, port)
             val reader: Scanner = Scanner(server.getInputStream())
@@ -53,11 +53,12 @@ class Client (ip: String, port: Int?) {
             Log.d(TAG, "connected to receiver $server")
             Log.d(TAG, "sending ping to confirm $ip:$port")
             send(writer, "PING")
+            val endFlag = "EXIT::/::"
             while (true) {
                 val message = reader.nextLine()  ?: "null"
-                Log.d(TAG, "Server($ip, $port): $message")
+                Log.d(TAG, "Sender: $message")
                 if (message.equals("I'm server")) {
-                    send(writer, "FILE")
+                    send(writer, "FILE::/::$title::/::$size::/::$type")
                     val permission = ContextCompat.checkSelfPermission(context, Manifest.permission.READ_EXTERNAL_STORAGE)
                     if (permission != PackageManager.PERMISSION_GRANTED) {
                         requestPermissions(context as Activity,
@@ -74,9 +75,19 @@ class Client (ip: String, port: Int?) {
                             writer.write(buff)
                             if (sz <= 0) break
                             Log.d(TAG,"sending file to ($ip, $port) :- ${sz}, ${buff}")
+                            while(true) {
+                                val message = reader.nextLine()
+                                if (message !== null) {
+                                    if(message.equals("COOL"))
+                                        break
+                                }
+                            }
+                            Log.d(TAG, "sending next KB")
                         }
-                        send(writer, "EXIT")
+                        send(writer, endFlag)
                         input.close()
+                        server.close()
+                        return 1
                     }
                 }
                 if (message.equals("EXIT")) {

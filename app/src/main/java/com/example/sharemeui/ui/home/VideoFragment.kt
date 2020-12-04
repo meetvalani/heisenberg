@@ -56,12 +56,12 @@ class VideoFragment : Fragment() {
                     Log.d("$TAG-$SUBTAG","video found :- $data $size $title")
                     // Save to your list here
                     newVideo.add(video(title, size , data))
+                    videoAdapter.updateVideoList(newVideo)
                 }
             }
             val close: Any = cur.close()
         }
         Log.d("$TAG-$SUBTAG", newVideo.toString())
-        videoAdapter.setVideo(newVideo)
         return videoFragment
     }
 

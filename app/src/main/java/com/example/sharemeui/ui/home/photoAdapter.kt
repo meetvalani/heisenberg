@@ -7,9 +7,11 @@ import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.sharemeui.R
+import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.list_photo.view.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.IO
+import kotlinx.coroutines.Dispatchers.Main
 import kotlinx.coroutines.launch
 
 
@@ -51,73 +53,109 @@ class photoAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         fun bind(photo: photo) {
             var columnWidth = (width / imagePerRow).toInt()
             var columnHeight = (columnWidth * 4 / 3).toInt()
-
-            val imageView = itemView.findViewById<ImageView>(R.id.photo)
-            val imageView1 = itemView.findViewById<ImageView>(R.id.photo1)
-            val imageView2 = itemView.findViewById<ImageView>(R.id.photo2)
-            val imageView3 = itemView.findViewById<ImageView>(R.id.photo3)
-            var imageLayouts = imageView.layoutParams
-            imageLayouts.width = columnWidth
-            imageLayouts.height = columnHeight
-            imageLayouts = imageView1.layoutParams
-            imageLayouts.width = columnWidth
-            imageLayouts.height = columnHeight
-            imageLayouts = imageView2.layoutParams
-            imageLayouts.width = columnWidth
-            imageLayouts.height = columnHeight
-            imageLayouts = imageView3.layoutParams
-            imageLayouts.width = columnWidth
-            imageLayouts.height = columnHeight
-
-            Glide.with(this.itemView).asBitmap().load(photo.coverImage).centerCrop().into(itemView.photo)
-            Glide.with(this.itemView).asBitmap().load(photo.coverImage1).centerCrop().into(itemView.photo1)
-            Glide.with(this.itemView).asBitmap().load(photo.coverImage2).centerCrop().into(itemView.photo2)
-            Glide.with(this.itemView).asBitmap().load(photo.coverImage3).centerCrop().into(itemView.photo3)
             val util = Util(itemView.context)
-            imageView.setOnClickListener {
-                val data = photo.coverImage
-                if (imageView.background !== null) {
-                    imageView.background = null
-                    CoroutineScope(IO).launch { util.removeFromTransferQueue(data, itemView) }
-                } else {
-                    imageView.setBackgroundColor(Color.rgb(47,127,45))
-                    CoroutineScope(IO).launch { util.insertIntoTransferQueue(data.split("/")[data.split("/").size - 1], "ASK SID MB" ,data, "INQUEUE", itemView) }
+
+
+            CoroutineScope(Main).launch {
+                val imageView = itemView.findViewById<ImageView>(R.id.photo)
+                var imageLayouts = imageView.layoutParams
+                imageLayouts.width = columnWidth
+                imageLayouts.height = columnHeight
+                Glide.with(itemView).load(photo.coverImage).into(itemView.photo)
+                imageView.setOnClickListener {
+                    val data = photo.coverImage
+                    if (imageView.background !== null) {
+                        imageView.background = null
+                        CoroutineScope(IO).launch { util.removeFromTransferQueue(data) }
+                    } else {
+                        imageView.setBackgroundColor(Color.rgb(47, 127, 45))
+                        CoroutineScope(IO).launch {
+                            util.insertIntoTransferQueue(
+                                data.split("/")[data.split(
+                                    "/"
+                                ).size - 1], "ASK SID MB", data, "INQUEUE", "IMAGE"
+                            )
+                        }
+                    }
+                }
+
+            }
+
+            CoroutineScope(Main).launch {
+                val imageView1 = itemView.findViewById<ImageView>(R.id.photo1)
+                var imageLayouts1 = imageView1.layoutParams
+                imageLayouts1.width = columnWidth
+                imageLayouts1.height = columnHeight
+                Glide.with(itemView).load(photo.coverImage1).into(itemView.photo1)
+                imageView1.setOnClickListener {
+                    val data = photo.coverImage1
+                    if (imageView1.background !== null) {
+                        imageView1.background = null
+                        CoroutineScope(IO).launch { util.removeFromTransferQueue(data) }
+                    } else {
+                        imageView1.setBackgroundColor(Color.rgb(47, 127, 45))
+                        CoroutineScope(IO).launch {
+                            util.insertIntoTransferQueue(
+                                data.split("/")[data.split(
+                                    "/"
+                                ).size - 1], "ASK SID MB", data, "INQUEUE", "IMAGE"
+                            )
+                        }
+                    }
                 }
             }
 
-            imageView1.setOnClickListener {
-                val data = photo.coverImage1
-                if (imageView1.background !== null) {
-                    imageView1.background = null
-                    CoroutineScope(IO).launch { util.removeFromTransferQueue(data, itemView) }
-                } else {
-                    imageView1.setBackgroundColor(Color.rgb(47,127,45))
-                    CoroutineScope(IO).launch { util.insertIntoTransferQueue(data.split("/")[data.split("/").size - 1], "ASK SID MB" ,data, "INQUEUE", itemView) }
+
+            CoroutineScope(Main).launch {
+                val imageView2 = itemView.findViewById<ImageView>(R.id.photo2)
+                val imageLayouts2 = imageView2.layoutParams
+                imageLayouts2.width = columnWidth
+                imageLayouts2.height = columnHeight
+                Glide.with(itemView).load(photo.coverImage2).into(itemView.photo2)
+                imageView2.setOnClickListener {
+                    val data = photo.coverImage2
+                    if (imageView2.background !== null) {
+                        imageView2.background = null
+                        CoroutineScope(IO).launch { util.removeFromTransferQueue(data) }
+                    } else {
+                        imageView2.setBackgroundColor(Color.rgb(47, 127, 45))
+                        CoroutineScope(IO).launch {
+                            util.insertIntoTransferQueue(
+                                data.split("/")[data.split(
+                                    "/"
+                                ).size - 1], "ASK SID MB", data, "INQUEUE", "IMAGE"
+                            )
+                        }
+                    }
                 }
             }
 
-            imageView2.setOnClickListener {
-                val data = photo.coverImage2
-                if (imageView2.background !== null) {
-                    imageView2.background = null
-                    CoroutineScope(IO).launch { util.removeFromTransferQueue(data, itemView) }
-                } else {
-                    imageView2.setBackgroundColor(Color.rgb(47,127,45))
-                    CoroutineScope(IO).launch { util.insertIntoTransferQueue(data.split("/")[data.split("/").size - 1], "ASK SID MB" ,data, "INQUEUE", itemView) }
+
+
+
+            CoroutineScope(Main).launch {
+                val imageView3 = itemView.findViewById<ImageView>(R.id.photo3)
+                val imageLayouts3 = imageView3.layoutParams
+                imageLayouts3.width = columnWidth
+                imageLayouts3.height = columnHeight
+                Glide.with(itemView).load(photo.coverImage3).into(itemView.photo3)
+                imageView3.setOnClickListener {
+                    val data = photo.coverImage3
+                    if (imageView3.background !== null) {
+                        imageView3.background = null
+                        CoroutineScope(IO).launch { util.removeFromTransferQueue(data) }
+                    } else {
+                        imageView3.setBackgroundColor(Color.rgb(47, 127, 45))
+                        CoroutineScope(IO).launch {
+                            util.insertIntoTransferQueue(
+                                data.split("/")[data.split(
+                                    "/"
+                                ).size - 1], "ASK SID MB", data, "INQUEUE", "IMAGE"
+                            )
+                        }
+                    }
                 }
             }
-
-            imageView3.setOnClickListener {
-                val data = photo.coverImage3
-                if (imageView3.background !== null) {
-                    imageView3.background = null
-                    CoroutineScope(IO).launch { util.removeFromTransferQueue(data, itemView) }
-                } else {
-                    imageView3.setBackgroundColor(Color.rgb(47,127,45))
-                    CoroutineScope(IO).launch { util.insertIntoTransferQueue(data.split("/")[data.split("/").size - 1], "ASK SID MB" ,data, "INQUEUE", itemView) }
-                }
-            }
-
 //            TODO() :- SIDDHARTH
 //             make proper loading for loading photos and its size
 

@@ -79,7 +79,7 @@ class MainActivity : AppCompatActivity() {
 //         gracefully handle once completed connection on both serer and receiever
 
         htspFab.setOnClickListener {
-            CoroutineScope(IO).launch {
+            CoroutineScope(Main).launch {
                 HtspFragment().apply {
                     show(supportFragmentManager, HtspFragment.TAG)
                 }
@@ -109,6 +109,7 @@ class MainActivity : AppCompatActivity() {
         if (sendButton !== null) {
             sendButton.setOnClickListener {
                 CoroutineScope(IO).launch { util.startSendingFromQueue(authorizedServers) }
+//                CoroutineScope(IO).launch { util.startSendingFromQueueTemp() }
 //                CoroutineScope(IO).launch {
 //                    Log.d(TAG, "called send file operation 1")
 //                    if (sharedPreferences !== null) {
@@ -180,7 +181,7 @@ class MainActivity : AppCompatActivity() {
     }
     suspend fun checkClient(delay: Long) {
         while (true) {
-            Log.d(TAG, "checking clients .... ")
+//            Log.d(TAG, "checking clients .... ")
             var br: BufferedReader?
             val servers = mutableListOf<String>()
             try {
@@ -191,7 +192,7 @@ class MainActivity : AppCompatActivity() {
                     if (line == null) {
                         break
                     }
-                    Log.d(TAG, line)
+//                    Log.d(TAG, line)
                     val splitted: Array<String?> = line.split(" +".toRegex()).toTypedArray()
                     if (splitted.isNotEmpty() && splitted[0] != null) {
                         if(isValidIp(splitted[0])) {
@@ -199,7 +200,7 @@ class MainActivity : AppCompatActivity() {
                         }
                     }
                 }
-                Log.d(TAG, "connected clients are $servers")
+//                Log.d(TAG, "connected clients are $servers")
                 CoroutineScope(IO).launch {
                     val newServers = servers.minus(authorizedServers)
                     newServers.forEach {
@@ -229,7 +230,7 @@ class MainActivity : AppCompatActivity() {
     }
     private fun isValidIp(ip: String?) : Boolean {
         if (ip != null) {
-            Log.d(TAG, "$ip ${ip.contains("192.168.", ignoreCase = true)} ${ip.split('.')}")
+//            Log.d(TAG, "$ip ${ip.contains("192.168.", ignoreCase = true)} ${ip.split('.')}")
             return ip.contains("192.168.", ignoreCase = true) && ip.split('.').size == 4
         }
         Log.d(TAG, "null ip")

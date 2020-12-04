@@ -12,7 +12,6 @@ import java.io.File
 import java.io.FileOutputStream
 import java.io.InputStream
 import java.io.OutputStream
-import java.lang.Exception
 import java.net.Socket
 import java.nio.charset.Charset
 import java.util.*
@@ -20,6 +19,7 @@ import java.util.*
 class ClientHandler (client: Socket) {
     val TAG = "ClientHandler"
     val client = client
+    var clientFileName: String = "null"
      fun run(context: Context) {
          try {
              Log.d(TAG, "Started Client $client")
@@ -28,13 +28,21 @@ class ClientHandler (client: Socket) {
              val writer: OutputStream = client.getOutputStream()
              while (true) {
                  val message = reader.nextLine() ?: "null"
-                 Log.d(TAG, "client $client:- $message")
+                 Log.d(TAG, "client $clientFileName:- $message")
                  if (message.equals("PING")) {
                      send(writer, "I'm server")
                  } else if (message.equals("EXIT")) {
                      client.close()
                      break
-                 } else if (message.equals("FILE")) {
+                 } else if (message.contains("FILE", ignoreCase = true)) {
+                     val fileProperty = message.split("::/::")
+                     if (fileProperty.isEmpty() || fileProperty.size < 4)
+                         break
+                     val title = fileProperty[1]
+                     val size = fileProperty[2]
+                     val type = fileProperty[3]
+                     clientFileName = title
+                     Log.d(TAG, fileProperty.toString())
                      val permission = ContextCompat.checkSelfPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE)
                      if (permission != PackageManager.PERMISSION_GRANTED) {
                          Log.d(TAG, "permission is not granted dude")
@@ -46,25 +54,39 @@ class ClientHandler (client: Socket) {
                      } else {
                          Log.d(TAG, "permission is granted dude")
                      }
-                     val yourFile = File(Environment.getExternalStorageDirectory().toString()+"/test.jpg")
+                     val directoryName = Environment.getExternalStorageDirectory().toString() + "/ShareMe"
+                     val directory = File(directoryName)
+                     if (!directory.exists()) {
+                         directory.mkdir()
+                     }
+                     var subDirectoryName = directoryName + "/${getSubDirectoryName(type)}"
+                     val subDirectory = File(subDirectoryName)
+                     if (!subDirectory.exists()) {
+                         subDirectory.mkdir()
+                     }
+                     val localFilePath = subDirectoryName + "/$title"
+                     val yourFile = File(localFilePath)
                      yourFile.createNewFile()
-                     val fos = FileOutputStream(Environment.getExternalStorageDirectory().toString()+"/test.jpg")
-                     var old = 0
+                     val fos = FileOutputStream(localFilePath)
                      val bitSize = 1024
+                     val endFlag = "EXIT::/::"
                      while (true) {
                          val buffer = ByteArray(bitSize)
                          val size = inputStream.read(buffer)
-
-                         Log.d(TAG, "received bytes :- " + size.toString())
-                         fos.write(buffer, 0, size)
-                         if (size < bitSize)
+                         if (String(buffer).contains(endFlag)) {
+                             Log.d(TAG, "server $localFilePath:- End of the file i got $endFlag(${endFlag.toByteArray().size})(${size - endFlag.toByteArray().size})")
+//                             fos.write(buffer, 0, size - endFlag.toByteArray().size)
+                             fos.write(buffer, 0, size)
                              break
+                         }
+                         fos.write(buffer, 0, size)
                          Log.d(TAG, buffer.size.toString() + " - " + size.toString() )
-
-                         old = size - 1
+                         send(writer, "COOL")
                      }
                      fos.flush()
                      fos.close()
+                     client.close()
+                     break
                  }
              }
              client.close()
@@ -74,5 +96,18 @@ class ClientHandler (client: Socket) {
     }
     fun send(writer: OutputStream, message: String?) {
         writer.write((message + '\n').toByteArray(Charset.defaultCharset()))
+    }
+
+    fun  getSubDirectoryName(type: String?) : String{
+        if(type.equals("IMAGE")) {
+            return "Images"
+        } else if (type.equals("VIDEO")) {
+            return "Videos"
+        } else if (type.equals("MUSIC")) {
+            return "Audios"
+        } else if (type.equals("APP")) {
+            return "Apps"
+        } else
+            return "Others"
     }
 }

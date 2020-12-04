@@ -31,58 +31,81 @@ class HtspFragment : BottomSheetDialogFragment() {
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-
-        val wifi = this.context?.getSystemService(Context.WIFI_SERVICE) as WifiManager
-        if (wifi.isWifiEnabled) {
-            wifi.isWifiEnabled = false
-        }
+        try {
+            val wifi = this.context?.getSystemService(Context.WIFI_SERVICE) as WifiManager
+            if (wifi.isWifiEnabled) {
+                wifi.isWifiEnabled = false
+            }
 //        TODO() -> Siddharth/Meet
 //        find a way to enable hotspot for version who have < 26 API support
 //        below code will work on if android have >= 26 API support
 
-        wifi.startLocalOnlyHotspot(
-            @RequiresApi(Build.VERSION_CODES.O)
-            object : WifiManager.LocalOnlyHotspotCallback() {
-                override fun onStarted(reservation: WifiManager.LocalOnlyHotspotReservation) {
-                    super.onStarted(reservation)
-                    var hotspotReservation = reservation
-                    val currentConfig: WifiConfiguration = hotspotReservation.getWifiConfiguration()
-                    Log.d(TAG,"Local Hotspot Started")
-                    Log.d(TAG,currentConfig.toString())
-                    Log.d(TAG,"password is " + currentConfig.preSharedKey)
-                    htsp_qr.visibility = View.VISIBLE
-                    val qrgEncoder = QRGEncoder("ssid:"+currentConfig.SSID+",preSharedKey:"+currentConfig.preSharedKey, null, QRGContents.Type.TEXT, 1)
-                    htsp_qr.setImageBitmap(qrgEncoder.encodeAsBitmap())
-                    if (sharedPreferences !== null) {
-                        val editor:SharedPreferences.Editor =  sharedPreferences.edit()
-                        editor.putString("whoami","gateway")
-                        editor.apply()
-                        editor.commit()
+            wifi.startLocalOnlyHotspot(
+                @RequiresApi(Build.VERSION_CODES.O)
+                object : WifiManager.LocalOnlyHotspotCallback() {
+                    override fun onStarted(reservation: WifiManager.LocalOnlyHotspotReservation) {
+                        try {
+                            super.onStarted(reservation)
+                            var hotspotReservation = reservation
+                            val currentConfig: WifiConfiguration =
+                                hotspotReservation.getWifiConfiguration()
+                            Log.d(TAG, "Local Hotspot Started")
+                            Log.d(TAG, currentConfig.toString())
+                            Log.d(TAG, "password is " + currentConfig.preSharedKey)
+                            htsp_qr.visibility = View.VISIBLE
+                            val qrgEncoder = QRGEncoder(
+                                "ssid:" + currentConfig.SSID + ",preSharedKey:" + currentConfig.preSharedKey,
+                                null,
+                                QRGContents.Type.TEXT,
+                                1
+                            )
+                            htsp_qr.setImageBitmap(qrgEncoder.encodeAsBitmap())
+                            if (sharedPreferences !== null) {
+                                val editor: SharedPreferences.Editor = sharedPreferences.edit()
+                                editor.putString("whoami", "gateway")
+                                editor.apply()
+                                editor.commit()
+                            }
+                        } catch (e: Exception) {
+                            Log.d(TAG, e.printStackTrace().toString())
+                        }
                     }
-                }
-                override fun onStopped() {
-                    super.onStopped()
-                    Log.d(TAG,"Local Hotspot Stopped")
-                    if (sharedPreferences !== null) {
-                        val editor:SharedPreferences.Editor =  sharedPreferences.edit()
-                        editor.putString("whoami","null")
-                        editor.apply()
-                        editor.commit()
-                    }
-                }
 
-                override fun onFailed(reason: Int) {
-                    super.onFailed(reason)
-                    Log.d(TAG,"Local Hotspot failed to start")
-                    if (sharedPreferences !== null) {
-                        val editor:SharedPreferences.Editor =  sharedPreferences.edit()
-                        editor.putString("whoami","null")
-                        editor.apply()
-                        editor.commit()
+                    override fun onStopped() {
+                        try {
+                            super.onStopped()
+                            Log.d(TAG, "Local Hotspot Stopped")
+                            if (sharedPreferences !== null) {
+                                val editor: SharedPreferences.Editor = sharedPreferences.edit()
+                                editor.putString("whoami", "null")
+                                editor.apply()
+                                editor.commit()
+                            }
+                        } catch (e: Exception) {
+                            Log.d(TAG, e.printStackTrace().toString())
+                        }
+                    }
+
+                    override fun onFailed(reason: Int) {
+                        try {
+                            super.onFailed(reason)
+                            Log.d(TAG, "Local Hotspot failed to start")
+                            if (sharedPreferences !== null) {
+                                val editor: SharedPreferences.Editor = sharedPreferences.edit()
+                                editor.putString("whoami", "null")
+                                editor.apply()
+                                editor.commit()
+                            }
+                        } catch (e: Exception) {
+                         Log.d(TAG, e.printStackTrace().toString())
+                        }
                     }
                 }
-            }, Handler()
-        )
+                , Handler()
+            )
+        } catch (e:Exception) {
+            Log.d("HtspFragment", e.printStackTrace().toString())
+        }
     }
     companion object {
         const val TAG = "CustomBottomSheetDialogFragment"

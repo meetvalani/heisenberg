@@ -12,6 +12,7 @@ data class TransferQueueEntity(
     @ColumnInfo(name = "title") val title: String?,
     @ColumnInfo(name = "size") val size: String?,
     @ColumnInfo(name = "filePath") val filePath: String?,
-    @ColumnInfo(name = "state") val state: String?
+    @ColumnInfo(name = "state") val state: String?,
+    @ColumnInfo(name = "type") val type: String?
 )
 

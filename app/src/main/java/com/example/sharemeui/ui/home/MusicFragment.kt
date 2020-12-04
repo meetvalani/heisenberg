@@ -56,21 +56,21 @@ class MusicFragment : Fragment() {
                     val size: String = cur.getString(cur.getColumnIndexOrThrow(MediaStore.Audio.Media.SIZE))
                     val title: String = cur.getString(cur.getColumnIndexOrThrow(MediaStore.Audio.Media.DISPLAY_NAME))
                     val artist: String = cur.getString(cur.getColumnIndexOrThrow(MediaStore.Audio.Media.ARTIST))
-                    val album: Uri = ContentUris.withAppendedId(
-                        MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
-                        cur.getLong(cur.getColumnIndexOrThrow(MediaStore.Audio.Media._ID))
-                    )
-                    val displayImage = BitmapFactory.decodeFile(album.toString())
-                    Log.d("$TAG-$SUBTAG","song found :- $data $size $title $artist $displayImage")
+//                    val album: Uri = ContentUris.withAppendedId(
+//                        MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
+//                        cur.getLong(cur.getColumnIndexOrThrow(MediaStore.Audio.Media._ID))
+//                    )
+//                    val displayImage = BitmapFactory.decodeFile(album.toString())
+                    Log.d("$TAG-$SUBTAG","song found :- $data $size $title $artist")
                     // Save to your list here
 
                     newMusic.add(music(title, size , data))
+                    musicAdapter.updateMusicList(newMusic)
                 }
             }
             val close: Any = cur.close()
         }
         Log.d("$TAG-$SUBTAG", newMusic.toString())
-        musicAdapter.setMusic(newMusic)
         return musicFragment
     }
 
